@@ -1,5 +1,3 @@
-<!-- views/welcome.ejs -->
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,127 +5,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome</title>
-    <!-- Add your CSS link or styles here -->
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #6667c0;
-            margin: 0;
-            padding: 0;
-        }
+        /* Your existing CSS styles */
 
-        .container {
-            text-align: center;
-            margin-top: 100px;
-        }
-
-        h1 {
-            color: #333;
-        }
-
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 250px 250px  15px 15px;
-            margin: 10px;
-            cursor: pointer;
-            transition: background-color 0.5s ease, border-radius 0.8s ease;
-        }
-
-        .button:hover {
-            background-color: #0c10ee;
-            border-radius:   15px 15px 250px 250px;
-            color: rgb(236, 235, 132);
-        }
-        .buttonG {
-            display: block; /* Changed to block */
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: rgb(255, 255, 255);
-            text-decoration: none;
-            border-radius: 250px 250px  15px 15px;
-            margin: 10px auto; /* Center horizontally */
-            width: 20%;
-            text-align: center;
-            cursor: pointer;
-            transition: background-color 0.5s ease, border-radius 0.8s ease;
-}
-
-.buttonG:hover {
-    background-color: #0c10ee;
-    color: rgb(236, 235, 132);
-    border-radius:   15px 15px 250px 250px;
-}
-
-
-
-.newcontainer {
-            background-color: aqua;
-            /* border: 5px solid black; */
-            padding: 20px; /* Add padding for spacing */
-            margin-top: 11%;
-            width: 70%;
-            margin-left: 6em;
-            border-radius: 25%;
-        }
-
-        .innercontainer {
-            /* border: 5px solid blue; */
-            display: flex;
-            justify-content: space-between; /* Distribute items evenly */
-            padding: 10px;
-        }
-
-        .imagecontainer {
-            border-radius: 50% 2% 25% 50%;
-            flex: 1; /* Take up remaining space */
-            margin-right: 20px; /* Add margin for spacing */
-            background-color: teal;
-            padding: 20px;
-            h2{
-                margin-left: 40px;
-                margin-top: 30px;
-                font-family: cursive;
+        /* Media query for smaller screens */
+        @media only screen and (max-width: 768px) {
+            .newcontainer {
+                width: 90%; /* Adjust width for smaller screens */
+                margin-left: 2em; /* Adjust margin for smaller screens */
             }
-            p{
-                margin-left: 30px;
-                font-family: cursive;
-            }
-        }
 
-        .loginarea {
-            /* border: 5px solid teal; */
-            flex: 2; /* Take up twice the space */
-            padding: 20px; /* Add padding for spacing */
-            border-radius: 2% 50% 20% 25%;
-            background-color: cadetblue;
-            border: 1px solid #0c10ee ;
-            padding-left: 10%;
+            .innercontainer {
+                flex-direction: column; /* Stack items vertically on smaller screens */
+            }
+
+            .imagecontainer,
+            .loginarea {
+                width: 100%; /* Set width to full for smaller screens */
+                margin: 20px 0; /* Add spacing between containers on smaller screens */
+            }
+
+            .button,
+            .buttonG {
+                width: 80%; /* Adjust button width for smaller screens */
+            }
         }
     </style>
 </head>
 
 <body>
-    <!-- <div class="container">
-        <h1>Welcome to Our Application</h1>
-        <a href="/login" class="button">Login</a>
-        <a href="/signup" class="button">Register</a>
-        <a href="/auth/google" class="buttonG">Login Using Your Google account</a>
-    </div> -->
     <div class="newcontainer">
         <div class="innercontainer">
             <div class="imagecontainer">
-                <!-- Add content for image container -->
-                <!-- <img src="your_image_url.jpg" alt="Image" style="width: 100%; height: auto;"> -->
                 <h2>Welcome to Our Application</h2>
                 <p>Login to access your account</p>
-            
             </div>
             <div class="loginarea">
-                <!-- Add content for login area -->
                 <p>Choose your login method</p>
                 <a href="/login" class="button">Login</a>
                 <p>Don't have an account?</p>
@@ -137,8 +50,6 @@
             </div>
         </div>
     </div>
-
-
 </body>
 
 </html>

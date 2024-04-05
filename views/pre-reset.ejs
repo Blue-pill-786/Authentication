@@ -1,61 +1,71 @@
-
 <!-- views/resetpassword.ejs -->
 
+<!DOCTYPE html>
+<html lang="en">
 
-<title>Reset Password</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Password</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
 
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f0f0f0;
-        margin: 0;
-        padding: 0;
-    }
+        .container {
+            text-align: center;
+            margin-top: 100px;
+        }
 
-    .container {
-        text-align: center;
-        margin-top: 100px;
-    }
+        h1 {
+            color: #333;
+        }
 
-    h1 {
-        color: #333;
-    }
+        form {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-    form {
-        margin-top: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+        input {
+            width: 80%;
+            max-width: 300px; /* Adjusted maximum width for smaller screens */
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
 
-    input {
-        width: 300px;
-        padding: 10px;
-        margin: 5px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-    }
+        button {
+            width: 80%;
+            max-width: 300px; /* Adjusted maximum width for smaller screens */
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-    button {
-        width: 300px;
-        padding: 10px;
-        margin: 10px 0;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
 
-    button:hover {
-        background-color: #0056b3;
-    }
-</style>
+<body>
+    <div class="container">
+        <h1>Reset Password</h1>
+        <form action="/resetpassword" method="post">
+            <input type="email" name="email" placeholder="Enter your Email" required>
+            <button type="submit">Reset Password</button>
+        </form>
+    </div>
+</body>
 
-<div class="container">
-    <h1>Reset Password</h1>
-    <form action="/resetpassword" method="post">
-        <input type="Email" name="Email" placeholder="Enter your Email" required>
-        <button type="submit">Reset Password</button>
-    </form>
-</div>
+</html>

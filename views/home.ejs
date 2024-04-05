@@ -1,8 +1,12 @@
 <!-- views/home.ejs -->
 
+<!DOCTYPE html>
+<html lang="en">
 
-
-<style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -39,6 +43,7 @@
             font-size: 16px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            margin-top: 20px;
         }
 
         .logout-button:hover {
@@ -53,26 +58,34 @@
             height: 30px;
             width: 30px;
             border-radius: 10%;
+            margin-bottom: 20px;
         }
-    
-    
-</style>
 
+        /* Media query for smaller screens */
+        @media only screen and (max-width: 768px) {
+            .image {
+                height: 20px;
+                width: 20px;
+            }
+        }
+    </style>
+</head>
 
-
-
-<div class="container">
-    <h1>Welcome  <img src="/images/programmer.png" alt="userlogo" class="image" /> <%= user.name %></h1>
-    <p class="message">You are now logged in</p>
-    <img src="/images/man.png" alt="userlogo" class="image" />
-    <form action="/logout" method="get">
-        <button type="submit" class="logout-button">Logout</button>
-    </form>
-    <div class="dummy-content">
-
-        <p>This is some dummy content added to demonstrate the page layout.</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla varius eros a lacus accumsan mattis. Fusce quis lacinia ipsum. Nullam sed velit vel enim dictum tincidunt.</p>
-        <p>Proin efficitur diam at velit pulvinar, et tristique eros tempus. Ut ac quam ac ipsum congue sodales. Donec hendrerit aliquam ex ac feugiat.</p>
-        <p>Sed non suscipit turpis. Ut consectetur justo sit amet enim vestibulum, eget venenatis magna condimentum.</p>
+<body>
+    <div class="container">
+        <h1>Welcome  <img src="/images/programmer.png" alt="userlogo" class="image" /> <%= user.name %></h1>
+        <p class="message">You are now logged in</p>
+        <img src="/images/man.png" alt="userlogo" class="image" />
+        <form action="/logout" method="get">
+            <button type="submit" class="logout-button">Logout</button>
+        </form>
+        <div class="dummy-content">
+            <p>This is some dummy content added to demonstrate the page layout.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla varius eros a lacus accumsan mattis. Fusce quis lacinia ipsum. Nullam sed velit vel enim dictum tincidunt.</p>
+            <p>Proin efficitur diam at velit pulvinar, et tristique eros tempus. Ut ac quam ac ipsum congue sodales. Donec hendrerit aliquam ex ac feugiat.</p>
+            <p>Sed non suscipit turpis. Ut consectetur justo sit amet enim vestibulum, eget venenatis magna condimentum.</p>
+        </div>
     </div>
-</div>
+</body>
+
+</html>
