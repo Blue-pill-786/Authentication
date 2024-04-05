@@ -1,0 +1,61 @@
+<!-- views/register.ejs -->
+
+<style>
+  body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+  }
+
+  .container {
+      text-align: center;
+      margin-top: 100px;
+  }
+
+  h1 {
+      color: #333;
+  }
+
+  form {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+  }
+
+  input {
+      width: 300px;
+      padding: 10px;
+      margin: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+  }
+
+  button {
+      width: 300px;
+      padding: 10px;
+      margin: 10px 0;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+  }
+
+  button:hover {
+      background-color: #0056b3;
+  }
+</style>
+
+
+<div class="container">
+  <h1>Register</h1>
+  <form action="/signup" method="post">
+    <input type="name" name="name" placeholder="Name" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="password" name="password" placeholder="Password" required>
+      <input type="password" name="confirmPassword" placeholder="Confirm Password" required>
+      <button type="submit">Sign Up</button>
+  </form>
+</div>

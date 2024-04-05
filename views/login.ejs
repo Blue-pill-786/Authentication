@@ -1,0 +1,61 @@
+<!-- views/login.ejs -->
+
+<style>
+  body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+  }
+
+  .container {
+      text-align: center;
+      margin-top: 100px;
+  }
+
+  h1 {
+      color: #333;
+  }
+ 
+
+  form {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+  }
+
+  input {
+      width: 300px;
+      padding: 10px;
+      margin: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+  }
+
+  button {
+      width: 300px;
+      padding: 10px;
+      margin: 10px 0;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+  }
+
+  button:hover {
+      background-color: #0056b3;
+  }
+</style>
+
+<div class="container">
+  <h1>Login</h1>
+  <form action="/login" method="post">
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="password" name="password" placeholder="Password" required>
+      <p>Forgot Password?     <a href="/resetpassword" class="button">Reset Password</a></p>
+      <button type="submit">Login</button>
+  </form>
+  <p>Not a User? <a href="/signup" class="button">Register Now</a></p>
+</div>
