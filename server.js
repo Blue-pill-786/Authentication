@@ -14,7 +14,7 @@ const SESSION_SECRET = process.env.SESSION_SECRET || 'mysecretkey';
 mongoose.connect(MONGODB_URI);
 //connect to mongodb
 mongoose.connection.on('connected', () => { 
-    console.log(`Mongoose connected on ${MONGODB_URI}`)
+    console.log(`Mongoose connected `)
 }).on('error', (err) => {
     console.log(`Mongoose error: ${err}`)
 })
@@ -33,17 +33,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-// app.get('/auth/google/callback', 
-//   passport.authenticate('google', { failureRedirect: '/login' }), // Redirect to login page on authentication failure
-//   function(req, res) {
-//     // Redirect to a specific URL after successful authentication
-//     res.redirect('/home'); // Change '/dashboard' to the desired URL
-//   }
-// );
+
 
 // Routes
 const authRoutes = require('./routes/authRoutes');
 app.use('/', authRoutes);
 
 // Server
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Server running `));
