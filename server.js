@@ -33,7 +33,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-
+app.get('/auth/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/login' }), // Redirect to login page on authentication failure
+  function(req, res) {
+    // Redirect to a specific URL after successful authentication
+    res.redirect('/home'); // Change '/dashboard' to the desired URL
+  }
+);
 
 // Routes
 const authRoutes = require('./routes/authRoutes');

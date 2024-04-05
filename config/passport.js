@@ -60,6 +60,7 @@ module.exports = function(passport) {
       }
     } catch (error) {
       return done(error);
+      
     }
   }));
   
