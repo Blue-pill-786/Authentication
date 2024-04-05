@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const session = require('express-session');
 const flash = require('connect-flash');
+const MongoStore = require('connect-mongo');
 require('dotenv').config(); // Load variables from .env
 
 const app = express();
@@ -11,13 +12,30 @@ const MONGODB_URI = process.env.MONGODB_URI ;
 const SESSION_SECRET = process.env.SESSION_SECRET || 'mysecretkey';
 
 // Connect to MongoDB
-mongoose.connect(MONGODB_URI);
+// mongoose.connect(MONGODB_URI);
 //connect to mongodb
-mongoose.connection.on('connected', () => { 
-    console.log(`Mongoose connected `)
-}).on('error', (err) => {
-    console.log(`Mongoose error: ${err}`)
-})
+mongoose.connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => {
+    console.log('MongoDB connected');
+}).catch((err) => {
+    console.error('MongoDB connection error:', err);
+    process.exit(1);
+});
+
+
+app.use(session({
+    secret: SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+        mongoUrl: MONGODB_URI,
+        ttl: 14 * 24 * 60 * 60, // Session TTL (optional)
+    }),
+}));
+
+
 //use images
 app.use(express.static('public'));
 // Set EJS as the view engine
