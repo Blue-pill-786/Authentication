@@ -1,4 +1,5 @@
 const LocalStrategy = require('passport-local').Strategy;
+const passport = require('passport');
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
@@ -9,8 +10,8 @@ module.exports = function(passport) {
     try {
       const user = await User.findOne({ email: email });
       if (!user) return done(null, false, { message: 'Incorrect email' });
-
-      const match = await bcrypt.compare(password, user.password);
+  
+      const match = await bcrypt.compare(password, user.password); // Error occurs here
       if (match) {
         return done(null, user);
       } else {
@@ -20,6 +21,8 @@ module.exports = function(passport) {
       return done(error);
     }
   }));
+  
+};
 
   // Google strategy for Google authentication
   passport.use(new GoogleStrategy({
@@ -79,4 +82,4 @@ module.exports = function(passport) {
       done(error);
     }
   });
-};
+

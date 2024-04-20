@@ -47,7 +47,7 @@ exports.postLogin = (req, res, next) => {
       if (err) {
         return next(err);
       }
-      return res.redirect('/home'); // Redirect to home page if authentication succeeds
+      return res.redirect('home'); // Redirect to home page if authentication succeeds
     });
   })(req, res, next);
 };
