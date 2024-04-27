@@ -118,22 +118,23 @@ function generateResetToken() {
 function sendResetPasswordEmail(email, resetToken) {
     // Configure nodemailer to send email (replace placeholders with your SMTP settings)
     const transporter = nodemailer.createTransport({
-        host: 'smtp.example.com',
-        port: 587,
-        secure: false,
-        auth: {
-            user: 'your-email@example.com',
-            pass: 'your-email-password'
-        }
+      host: "smtp.ethereal.email",
+      port: 587,
+      secure: false, // Use `true` for port 465, `false` for all other ports
+      auth: {
+        user: "maddison53@ethereal.email",
+        pass: "jn7jnAPss4f63QBp6D",
+      },
     });
 
     // Email content
     const mailOptions = {
-        from: 'your-email@example.com',
+        from: '"Maddison Foo Koch 👻" <maddison53@ethereal.email>',
         to: email,
         subject: 'Reset Your Password',
+        text: "reset your password",
         html: `<p>Click the following link to reset your password:</p>
-               <a href="http://your-domain.com/resetpassword/${resetToken}">Reset Password</a>`
+               <a href="http://authentication-xx4n.onrender.com/resetpassword/${resetToken}">Reset Password</a>`
     };
 
     // Send email

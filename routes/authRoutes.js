@@ -39,6 +39,9 @@ router.get('/auth/google/callback',
     // Successful authentication, redirect home.
     res.redirect('/home');
   });
-
+// router.get('/reset-password', (req, res) => {
+//     // You can render a reset password form here
+//     res.send('Reset Password Form');
+// });
 
 module.exports = router;
