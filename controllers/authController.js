@@ -147,3 +147,38 @@ function sendResetPasswordEmail(email, resetToken) {
     });
 }
 
+exports.resetpassword = (req, res)=>{
+  const email = req.user.email;
+  console.log("email:",email);
+
+  // Generate a new reset token and save it on the users model
+ 
+  res.render('reset-password');
+ 
+};
+
+exports.reset = async(req,res)=>{
+  const  {token, password, confirmPassword} = req.body;
+  try{
+    // Check that passwords match
+    if (password !== confirmPassword) throw new Error('Passwords do not match');
+    
+    // Verify validity of token
+    const user = getUserFromToken(token);
+    if (!user) throw new Error('Invalid Token');
+    
+    // Hash password and update the user's password
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await User.updateOne({_id: user._id}, {password: hashedPassword});
+    
+    // Log the user in after resetting their password
+    req.login(user, err => {
+      if (err) return next(err);
+      
+      res.redirect('/');
+    })
+  }catch(e){
+    console.log(e);
+    res.status(400).send(e.message);
+  }
+}

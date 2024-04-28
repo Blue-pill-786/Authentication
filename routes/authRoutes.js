@@ -25,9 +25,19 @@ router.get('/logout', authController.logout);
 router.get('/home',ensureAuthenticated, authController.getHome);
 
 //resetpassword
+// Route for displaying the reset password form
 router.get('/resetpassword', authController.getResetPassword);
+
+// Route for handling the submission of the reset password form
 router.post('/resetpassword', authController.postResetPassword);
+
+// Route for displaying a success message after resetting the password
 router.get('/resetpassword/success', authController.getResetPasswordSuccess);
+
+// Route for initiating the password reset process
+router.get('/reset', authController.resetpassword);
+router.post('/reset', authController.reset)
+
 
 //Google routes
 router.get('/auth/google',
