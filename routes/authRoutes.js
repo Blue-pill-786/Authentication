@@ -12,11 +12,18 @@ router.post('/signup', authController.postSignup);
 
 // Login
 router.get('/login', authController.getLogin);
-router.post('/login', passport.authenticate('local', {
-  successRedirect: '/home',
-  failureRedirect: '/login',
-  failureFlash: true
-}));
+// router.post('/login', passport.authenticate('local', {
+//   successRedirect: '/home',
+//   failureRedirect: '/login',
+//   failureFlash: true
+// }));
+router.post('/login', 
+passport.authenticate('local', {
+    successRedirect: '/home',
+    failureRedirect: '/login',
+    failureFlash: true
+  }),
+authController.login);
 
 // Logout
 router.get('/logout', authController.logout);
