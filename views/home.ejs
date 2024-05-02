@@ -1,8 +1,5 @@
-<!-- views/home.ejs -->
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,78 +14,118 @@
 
         .container {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            margin: 30px;
             text-align: center;
+            background-color: #007bff;
+            
+        }
+        .innerContainer{
+            width: 60%;
+            justify-content: space-around;
+            margin-top: 30px;
+        }
+        .profileContainer{
+            flex-direction: column;
+            h1{
+                color: white;
+                display: flex;
+                flex-direction: column-reverse;
+
+            }
         }
 
         h1 {
             color: #30ceac;
-            margin: 20px;
+            margin-bottom: 10px;
         }
 
         .message {
             color: #666;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+        }
+
+        .user-logo {
+            height: 50px;
+            width: auto;
+            margin-bottom: 10px;
         }
 
         .logout-button {
             padding: 12px 24px;
             background-color: #007bff;
+            
             color: #fff;
             border: none;
-            border-radius: 5px;
+            border-radius: 15px;
             font-size: 16px;
             cursor: pointer;
             transition: background-color 0.3s ease;
-            margin-top: 20px;
+            margin: 20px;
+            border: 1px solid white;
         }
 
         .logout-button:hover {
             background-color: #0056b3;
+            border: none;
         }
 
         .dummy-content {
             margin-top: 50px;
             color: #777;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
-        .image{
-            height: 30px;
-            width: 30px;
-            border-radius: 10%;
+
+        .dummy-content p {
             margin-bottom: 20px;
         }
 
-        /* Media query for smaller screens */
         @media only screen and (max-width: 768px) {
-            .image {
-                height: 20px;
-                width: 20px;
+            .user-logo {
+                height: 40px;
+            }
+
+            .logout-button {
+                font-size: 14px;
+            }
+
+            .dummy-content {
+                padding: 0 10px;
             }
         }
     </style>
 </head>
-
 <body>
     <div class="container">
-        <h1>Welcome  <img src="/images/programmer.png" alt="userlogo" class="image" /> <%= user.name %></h1>
-        <p class="message">You are now logged in</p>
-        <img src="/images/man.png" alt="userlogo" class="image" />
+        <div class="innerContainer">
+
+            <h1>Welcome <img src="/images/programmer.png" alt="userlogo" class="user-logo"> </h1>
+        </div>
+        <div class="profileContainer">
+
+            <h1>
+                
+                <%= user.name %>
+                <img src="/images/man.png" alt="userlogo" class="user-logo">
+            </h1>
+        </div>
         <form action="/logout" method="get">
             <button type="submit" class="logout-button">Logout</button>
         </form>
         <form action="/reset" method="get">
             <button type="submit" class="logout-button">Reset Password</button>
         </form>
-        <div class="dummy-content">
-            <p>This is some dummy content added to demonstrate the page layout.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla varius eros a lacus accumsan mattis. Fusce quis lacinia ipsum. Nullam sed velit vel enim dictum tincidunt.</p>
-            <p>Proin efficitur diam at velit pulvinar, et tristique eros tempus. Ut ac quam ac ipsum congue sodales. Donec hendrerit aliquam ex ac feugiat.</p>
-            <p>Sed non suscipit turpis. Ut consectetur justo sit amet enim vestibulum, eget venenatis magna condimentum.</p>
-        </div>
+    </div>
+    <div class="dummy-content">
+        <p class="message">You are now logged in</p>
+        <p>This is some dummy content added to demonstrate the page layout.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla varius eros a lacus accumsan mattis. Fusce quis lacinia ipsum. Nullam sed velit vel enim dictum tincidunt.</p>
+        <p>Proin efficitur diam at velit pulvinar, et tristique eros tempus. Ut ac quam ac ipsum congue sodales. Donec hendrerit aliquam ex ac feugiat.</p>
+        <p>Sed non suscipit turpis. Ut consectetur justo sit amet enim vestibulum, eget venenatis magna condimentum.</p>
     </div>
 </body>
-
 </html>
