@@ -161,7 +161,7 @@ exports.resetpassword = (req, res)=>{
 
 
 
-exports.reset = async (req, res) => {
+exports.postReset = async (req, res) => {
   const { newPassword, confirmNewPassword } = req.body;
   const user = req.user;
 
