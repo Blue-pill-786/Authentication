@@ -90,6 +90,7 @@ exports.ensureAuthenticated = (req, res, next) => {
 exports.getWelcome = (req, res) => {
   res.render('welcome'); // This assumes your welcome.ejs file is located in the views folder
 };
+
 //generate reset token
 function generateResetToken() {
   // Implement token generation logic here
@@ -181,6 +182,7 @@ exports.resetpassword = (req, res)=>{
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
+  console.log("login function triggered", email, req.body, req.params)
   try {
     // Find user by email
     const user = await User.findOne({ email });
@@ -215,8 +217,8 @@ exports.reset = async (req, res) => {
     }
 
     // Find the user based on the provided reset token
-    const userr = await User.findOne( user );
-
+    const userr = await User.findOne( {resetToken} );
+    console.log(userr);
     // Verify if the user exists
     if (!user) {
       throw new Error('Invalid token');

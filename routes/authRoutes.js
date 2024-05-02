@@ -12,11 +12,7 @@ router.post('/signup', authController.postSignup);
 
 // Login
 router.get('/login', authController.getLogin);
-// router.post('/login', passport.authenticate('local', {
-//   successRedirect: '/home',
-//   failureRedirect: '/login',
-//   failureFlash: true
-// }));
+
 router.post('/login', 
 passport.authenticate('local', {
     successRedirect: '/home',
@@ -29,7 +25,7 @@ authController.login);
 router.get('/logout', authController.logout);
 
 // Home
-router.get('/home',ensureAuthenticated, authController.getHome);
+router.get('/home',ensureAuthenticated,  authController.getHome);
 
 //resetpassword
 // Route for displaying the reset password form
