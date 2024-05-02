@@ -4,8 +4,7 @@ const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const passport = require('passport'); // Add passport import
-const Brevo = require('@getbrevo/brevo'); // Add Brevo import
-
+require('../config/passport')(passport); 
 
 
 exports.getSignup = (req, res) => {
@@ -39,23 +38,7 @@ exports.postSignup = async (req, res) => {
 exports.getLogin = (req, res) => {
   res.render('login');
 };
-exports.postLogin = (req, res, next) => {
-  passport.authenticate('local', (err, user, info) => {
-    if (err) {
-      return next(err);
-    }
-    if (!user) {
-      req.flash('error', info.message);
-      return res.redirect('/login'); // Redirect to login page if authentication fails
-    }
-    req.logIn(user, (err) => {
-      if (err) {
-        return next(err);
-      }
-      return res.redirect('home'); // Redirect to home page if authentication succeeds
-    });
-  })(req, res, next);
-};
+
 
 exports.logout = (req, res) => {
   req.logout(function(err) {
@@ -69,11 +52,8 @@ exports.logout = (req, res) => {
   });
 };
 
-var user;
 
 exports.getHome = (req, res) => {
-  user=req.user;
-  console.log("user:",user);
   res.render('home', { 
     user: req.user
    });
@@ -180,36 +160,11 @@ exports.resetpassword = (req, res)=>{
 
 
 
-exports.login = async (req, res) => {
-  const { email, password } = req.body;
-  console.log("login function triggered", email, req.body, req.params)
-  try {
-    // Find user by email
-    const user = await User.findOne({ email });
-    if (!user) throw new Error('User not found');
-
-    // Validate password
-    const passwordMatch = await bcrypt.compare(password, user.password);
-    if (!passwordMatch) throw new Error('Invalid password');
-
-    // Generate token for password reset
-    const resetToken = jwt.sign({ userId: user._id }, 'your_secret_key', { expiresIn: '1h' });
-
-    // Store token and its expiration date in user document
-    user.resetToken = resetToken;
-    user.resetTokenExpiration = Date.now() + 3600000; // 1 hour
-    await user.save();
-    // console.log("reset", resetToken)
-    // Send token to user (For demonstration purposes, we'll just send it in the response)
-    return res.redirect('home',{resetToken});
-  } catch (error) {
-    console.error(error);
-    res.status(400).json({ success: false, message: error.message });
-  }
-};
 
 exports.reset = async (req, res) => {
-  const { newPassword, confirmNewPassword, resetToken } = req.body;
+  const { newPassword, confirmNewPassword } = req.body;
+  const user = req.user;
+
   try {
     // Check that passwords match
     if (newPassword !== confirmNewPassword) {
@@ -217,8 +172,8 @@ exports.reset = async (req, res) => {
     }
 
     // Find the user based on the provided reset token
-    const userr = await User.findOne( {resetToken} );
-    console.log(userr);
+    const userr = await User.findOne( user );
+    
     // Verify if the user exists
     if (!user) {
       throw new Error('Invalid token');

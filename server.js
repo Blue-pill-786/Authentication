@@ -25,15 +25,6 @@ mongoose.connect(MONGODB_URI, {
 });
 
 
-app.use(session({
-    secret: SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({
-        mongoUrl: MONGODB_URI,
-        ttl: 14 * 24 * 60 * 60, // Session TTL (optional)
-    }),
-}));
 
 
 //use images
@@ -46,7 +37,16 @@ require('./config/passport')(passport);
 
 // Express middleware
 app.use(express.urlencoded({ extended: false }));
-app.use(session({ secret: SESSION_SECRET, resave: true, saveUninitialized: true }));
+
+app.use(session({
+    secret: SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+        mongoUrl: MONGODB_URI,
+        ttl: 14 * 24 * 60 * 60, // Session TTL (optional)
+    }),
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
