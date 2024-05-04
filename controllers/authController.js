@@ -4,6 +4,7 @@ const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const passport = require('passport'); // Add passport import
+const user = require('../models/user');
 require('../config/passport')(passport); 
 
 
@@ -72,26 +73,35 @@ exports.getWelcome = (req, res) => {
 };
 
 //generate reset token
-function generateResetToken() {
-  // Implement token generation logic here
-  return crypto.randomBytes(32).toString('hex');
-
+async function generateResetTokenAndStore(email) {
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw new Error('User not found');
+    }
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    user.resetToken = resetToken;
+    user.resetTokenExpiration = Date.now() + 10 * 60 * 1000; // 10 minutes expiration
+    await user.save();
+    return resetToken;
+  } catch (error) {
+    console.error('Error generating and storing reset token:', error);
+    throw error;
+  }
 }
 //reset password
 exports.postResetPassword = async (req, res) => {
-    const { email } = req.body;
-
-    // Generate a reset password token (you can use a library like `crypto` to generate a unique token)
-    const resetToken = generateResetToken();
-    // console.log("token",resetToken);
-    // Save the reset token in the database or cache with the user's email (not implemented here)
-
-    // Send an email with the reset password link
+  const { email } = req.body;
+  try {
+    const resetToken = await generateResetTokenAndStore(email);
     sendResetPasswordEmail(email, resetToken);
-
-    // Redirect to a page indicating that the reset password email has been sent
     res.redirect('/resetpassword/success');
+  } catch (error) {
+    console.error('Error generating reset password token:', error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
 };
+
 
 exports.getResetPassword = (req, res) => {
     res.render('pre-reset');
@@ -120,16 +130,15 @@ function sendResetPasswordEmail(email, resetToken) {
       pass: "6639b92543819582e59793890d15be42",
     },
   });
-  // console.log(transporter)
 
   // Email content
   const mailOptions = {
-      from: '"Maddison Foo Koch 👻" <reset@demomailtrap.com>',
+      from: '"Maddison 👻" <reset@demomailtrap.com>',
       to: email,
       subject: 'Reset Your Password',
       text: "reset your password",
       html: `<p>Click the following link to reset your password:</p>
-             <a href="http://authentication-xx4n.onrender.com/resetpassword/${resetToken}">Reset Password</a>`
+             <a href="http://authentication-xx4n.onrender.com/resettoken/${resetToken}">Reset Password</a>`
   };
 
   // Send email
@@ -137,7 +146,7 @@ function sendResetPasswordEmail(email, resetToken) {
       if (error) {
           console.error('Error sending reset password email:', error);
       } else {
-          // console.log('Reset password email sent:', info.response);
+      
       }
   });
 }
@@ -148,23 +157,94 @@ function sendResetPasswordEmail(email, resetToken) {
 
 
 
-exports.resetpassword = (req, res)=>{
+exports.resetpasswordpage = async (req, res) => {
   const email = req.user.email;
-  // console.log("email:",email);
+  
 
-  // Generate a new reset token and save it on the users model
- 
-  res.render('reset-password');
- 
+  try {
+    // Find the user by email
+    const user = await User.findOne({ email });
+    
+
+    if (!user) {
+      // Handle case where user is not found
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+    // Generate a token that expires in 10mins 
+    const expiryTime = Date.now() + 10 * 60 * 1000;
+    const resetToken = (await generateResetTokenAndStore(email)).toString();
+    
+    // Save this reset token and expiry time on the users database document
+    user.resetToken= resetToken;
+    user.resetTokenExpiration= expiryTime;
+
+    await user.save();
+
+    // Render the reset password page
+    res.render('reset-password');
+  } catch (error) {
+    console.error('Error finding user:', error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+};
+exports.gettokenreset = async (req, res) => {
+  const resetToken = req.params.resetToken;
+  try {
+    const user = await User.findOne({
+      resetToken: resetToken,
+      resetTokenExpiration: { $gt: Date.now() } // Check if token is not expired
+    });
+    if (!user) {
+      return res.status(400).send('Invalid or Expired Token');
+    }
+    res.render('resettoken', { resetToken }); // Render the reset password page
+  } catch (error) {
+    console.error('Error verifying password reset token:', error);
+    res.status(500).send('Server Error');
+  }
 };
 
+// Function to handle resetting the password
+exports.tokenreset = async (req, res) => {
+  const token = req.body.token;
+  const password = req.body.newPassword;
+
+  if (!token || !password) {
+    return res.status(400).json({ success: false, message: 'Missing credentials' });
+  }
+
+  try {
+    const user = await User.findOneAndUpdate(
+      {
+        resetToken: token,
+        resetTokenExpiration: { $gt: Date.now() } // Check if token is not expired
+      },
+      {
+        $set: {
+          password: await bcrypt.hash(password, 10),
+          resetToken: null,
+          resetTokenExpiration: null
+        }
+      },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(400).json({ success: false, message: 'Invalid or Expired Token' });
+    }
+
+    res.redirect('/login');
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ success: false, message: 'Server Error' });
+  }
+};
 
 
 
 exports.postReset = async (req, res) => {
   const { newPassword, confirmNewPassword } = req.body;
   const user = req.user;
-
   try {
     // Check that passwords match
     if (newPassword !== confirmNewPassword) {
@@ -172,8 +252,7 @@ exports.postReset = async (req, res) => {
     }
 
     // Find the user based on the provided reset token
-    const userr = await User.findOne( user );
-    
+    const userr = await User.findOne(user);
     // Verify if the user exists
     if (!user) {
       throw new Error('Invalid token');

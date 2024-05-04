@@ -37,9 +37,10 @@ router.post('/resetpassword', authController.postResetPassword);
 router.get('/resetpassword/success', authController.getResetPasswordSuccess);
 
 // Route for initiating the password reset process
-router.get('/reset', authController.resetpassword);
-router.post('/reset', authController.postReset)
-
+router.get('/reset', authController.resetpasswordpage);
+router.post('/reset', authController.postReset);
+router.get('/resettoken/:resetToken', authController.gettokenreset);
+router.post('/resettoken', authController.tokenreset);
 
 //Google routes
 router.get('/auth/google',
